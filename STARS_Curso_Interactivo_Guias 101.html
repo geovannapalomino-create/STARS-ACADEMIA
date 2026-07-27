@@ -571,7 +571,7 @@ function enviarRegistroSilencioso(correctas, total) {
   fetch(WEBAPP_URL, {
     method: "POST",
     headers: { "Content-Type": "text/plain;charset=utf-8" },
-    body: JSON.stringify({ nombre: userName, marca: userMarca, correctas: correctas, total: total })
+    body: JSON.stringify({ curso: "guias", nombre: userName, marca: userMarca, correctas: correctas, total: total })
   }).then(function(res){ return res.text(); }).then(function(){
     document.querySelectorAll(".registro-status").forEach(function(el){ el.textContent = "✅ Registrado automáticamente"; });
   }).catch(function(){
