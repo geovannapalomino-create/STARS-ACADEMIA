@@ -476,7 +476,7 @@ function initMatch() {
 function renderMatchQuestion() {
   matchAnswered = false;
   const item = MATCH_ITEMS[matchIndex];
-  document.getElementById('matchProgress').textContent = `Situación ${matchIndex+1} de ${MATCH_ITEMS.length}`;
+  document.getElementById('matchProgress').textContent = `Situation ${matchIndex+1} of ${MATCH_ITEMS.length}`;
   document.getElementById('matchStatement').textContent = item.text;
   document.getElementById('matchFeedback').textContent = '';
   document.getElementById('matchFeedback').className = 'match-feedback';
@@ -528,7 +528,7 @@ function initQuiz() {
 }
 function renderQuizQuestion() {
   const item = QUIZ[quizIndex];
-  document.getElementById('quizProgress').textContent = `Pregunta ${quizIndex+1} de ${QUIZ.length}`;
+  document.getElementById('quizProgress').textContent = `Question ${quizIndex+1} of ${QUIZ.length}`;
   document.getElementById('quizQ').textContent = item.q;
   const opts = document.getElementById('quizOptions');
   opts.innerHTML = '';
