@@ -217,13 +217,16 @@ body {
           <span class="meta-chip">5 PILARES</span>
           <span class="meta-chip">QUIZ FINAL</span>
         </div>
-        <input type="text" id="userNameInput" class="name-input" placeholder="Escribe tu nombre completo" maxlength="60"/>
-        <select id="userMarcaInput" class="name-input">
-          <option value="" disabled selected>Marca / Operación</option>
-          <option value="Yapa">Yapa</option>
-          <option value="RMT">RMT</option>
-          <option value="Otros">Otros</option>
-        </select>
+                <input type="text" id="userFirstNameInput" class="name-input" placeholder="Nombre" maxlength="40"/>
+                <input type="text" id="userLastNameInput" class="name-input" placeholder="Apellido" maxlength="40"/>
+                <select id="userAreaSelect" class="name-input">
+                            <option value="" disabled selected>Marca / Operación</option>
+                            <option value="Yapa">Yapa</option>
+                            <option value="RMT">RMT</option>
+                            <option value="__other__">Otra / no aparece</option>
+                </select>
+                <input type="text" id="userAreaOtherInput" class="name-input" placeholder="Escribe tu área" maxlength="60" style="display:none;"/>
+                <div id="startError" style="color:#ffb3b3;font-size:12px;margin-top:6px;display:none;"></div>
         <button class="btn btn-gold" onclick="startCourse()">Empezar</button>
       </div>
     </section>
@@ -423,13 +426,41 @@ let quizIndex = 0, quizScore = 0;
 let userName = '';
 let userMarca = '';
 
-function startCourse() {
-  const val = document.getElementById('userNameInput').value.trim();
-  userName = val.length > 0 ? val : 'Guía STARS';
-  const marcaVal = document.getElementById('userMarcaInput').value;
-  userMarca = marcaVal || 'Sin especificar';
-  goTo(1);
-}
+document.addEventListener('DOMContentLoaded', function() {
+    const areaSelect = document.getElementById('userAreaSelect');
+    if (areaSelect) {
+          areaSelect.addEventListener('change', function() {
+                  const otherInput = document.getElementById('userAreaOtherInput');
+                  otherInput.style.display = (this.value === '__other__') ? 'block' : 'none';
+                  if (this.value !== '__other__') otherInput.value = '';
+          });
+    }
+  });
+
+              function startCourse() {
+                  const errEl = document.getElementById('startError');
+                  const firstName = document.getElementById('userFirstNameInput').value.trim();
+                  const lastName = document.getElementById('userLastNameInput').value.trim();
+                        const areaSelectVal = document.getElementById('userAreaSelect').value;
+                  const areaOtherVal = document.getElementById('userAreaOtherInput').value.trim();
+
+                  const missing = [];
+                  if (!firstName) missing.push('Nombre');
+                  if (!lastName) missing.push('Apellido');
+                  if (!areaSelectVal) missing.push('Marca/Operación');
+                  if (areaSelectVal === '__other__' && !areaOtherVal) missing.push('Área (escríbela)');
+
+                  if (missing.length > 0) {
+                        errEl.textContent = 'Falta completar: ' + missing.join(', ');
+                        errEl.style.display = 'block';
+                        return;
+                  }
+                  errEl.style.display = 'none';
+
+                  userName = (firstName + ' ' + lastName).trim();
+                  userMarca = (areaSelectVal === '__other__') ? areaOtherVal : areaSelectVal;
+                  goTo(1);
+              }
 
 function renderDots() {
   const wrap = document.getElementById('progressWrap');
